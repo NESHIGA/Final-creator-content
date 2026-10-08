@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CreatorOS AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><b>✦ CreatorOS AI</b><a href="#top">🏠 Home</a><a href="#brief">✨ AI Brief</a><a href="#match">🔎 Creators</a><a href="#compare">⚖️ Compare</a><a href="#profile">👤 Profile</a><a href="#twin">🧠 Creative Twin</a><a href="#workspace">📋 Projects</a><a href="#qc">🛡️ Quality</a><a href="#memory">💾 Memory</a><a href="#model">🗂️ Data model</a><button id="theme" class="ghost" aria-label="Toggle dark mode" style="padding:6px 10px">🌙</button><a class="btn" href="#brief">Get Started</a></header>
+<main>
+<section class="hero" id="top"><span class="sp" style="top:9%;left:47%">✦</span><span class="sp" style="bottom:12%;right:5%;font-size:30px">✦</span><span class="sp" style="top:7%;right:7%;font-size:16px">✦</span><div><h1>Turn Your Ideas Into <span>Stunning AI Creations</span></h1><p class="sub">Connect with verified AI creators, get intelligent recommendations, create briefs with AI, and bring your vision to life. Sample data, working logic.</p><div class="cta"><a class="btn" href="#brief">Create a Brief</a><a class="btn navy" href="#match">Explore Creators</a><button id="demo" class="ghost outline" >▶ Watch full flow</button></div><p class="script">Your Vision. Our AI. Extraordinary Content.</p><div class="stats"><div><b>10K+</b><small>AI Creators</small></div><div><b>500+</b><small>Brands &amp; Agencies</small></div><div><b>50K+</b><small>Projects Completed</small></div><div><b>99%</b><small>Satisfaction Rate</small></div></div></div><div><div class="tiles" id="tl"></div><span class="badge" id="aib">✦ Checking AI connection...</span></div></section>
+<div id="toast" role="status" aria-live="polite"></div><nav class="steps" aria-label="Progress"><a class="st" href="#brief">1 Brief</a><a class="st" href="#match">2 Match</a><a class="st" href="#compare">3 Compare</a><a class="st" href="#workspace">4 Hire</a><a class="st" href="#qc">5 Deliver</a></nav>
+<div class="strip"><span>Works with</span><b>Midjourney</b><b>Runway</b><b>Sora</b><b>Flux</b><b>ComfyUI</b><b>ElevenLabs</b><b>Claude</b></div>
+<section id="gallery"><h2>Featured AI work</h2><p class="sub" style="margin-top:6px">Hover to pause the carousel.</p><div class="car3d" id="c3"><div class="ring" id="ring"></div></div></section>
+<div class="qb"><p id="qt" aria-live="off"></p></div>
+<section style="padding-top:28px"><div class="two" style="margin-top:0"><div class="card"><h3>AI at every step</h3><p class="note">Brief, match, twin and feedback all use AI, not just search.</p></div><div class="card"><h3>Explainable matches</h3><p class="note">Every score shows its reasons and the portfolio project behind it.</p></div><div class="card"><h3>Honest answers</h3><p class="note">The twin says "no direct evidence" instead of guessing.</p></div></div></section>
+<section id="briefsec" style="padding-top:36px"><h2>AI Brief Builder</h2><p class="sub" style="margin-top:6px;margin-bottom:14px">Tell us your idea and we will create a structured brief.</p>
+<div class="card" id="brief">
+<label for="idea">What do you need?</label>
+<textarea id="idea" rows="2">I need a premium advertisement for my coffee brand on Instagram.</textarea>
+<div class="row">
+<div><label for="bud">Budget (₹)</label><input id="bud" type="number" value="16000" min="1000"></div>
+<div><label for="dl">Deadline (days)</label><input id="dl" type="number" value="4" min="1"></div>
+<div><label for="plat">Platform</label><select id="plat"><option>Instagram</option><option>YouTube</option><option>TV / OTT</option><option>Website</option></select></div>
+<div><label for="tone">Tone</label><select id="tone"><option>Premium</option><option>Playful</option><option>Bold</option><option>Warm</option></select></div>
+</div>
+<div class="row"><div><label for="ct">Content type</label><select id="ct"><option>AI Video</option><option>AI Animation</option><option>Image / Graphics</option><option>Social Reel</option></select></div><div><label for="sty">Style</label><select id="sty"><option>Cinematic</option><option>Minimal</option><option>Playful</option><option>Realistic</option><option>3D</option></select></div><div><label for="ar2">Aspect ratio</label><select id="ar2"><option>9:16</option><option>1:1</option><option>16:9</option><option>4:5</option></select></div><div><label for="cu">Commercial use</label><select id="cu"><option>Paid ads (full rights)</option><option>Organic social only</option><option>Not needed</option></select></div></div><button id="go">Build brief and find creators</button>
+<div id="briefOut" aria-live="polite"></div>
+</div>
+</section>
+
+<section id="match"><h2>Search AI Creators</h2><p class="sub" style="margin-top:0">Move the sliders and the ranking changes. Every reason below comes from the creator's data.</p>
+<div class="card">
+<div class="sliders">
+<div><label>Style fit <b id="vs">50</b>%</label><input type="range" id="ws" min="0" max="100" value="50"></div>
+<div><label>Budget fit <b id="vb">30</b>%</label><input type="range" id="wb" min="0" max="100" value="30"></div>
+<div><label>Speed <b id="vd">20</b>%</label><input type="range" id="wd" min="0" max="100" value="20"></div>
+</div>
+<input id="srch" placeholder="Search by creator, tool or project, e.g. Runway or sneaker" aria-label="Search creators"><div class="row"><div><label for="ft">AI tool</label><select id="ft"><option value="">All tools</option><option>Midjourney</option><option>Runway</option><option>Sora</option><option>Flux</option><option>ComfyUI</option><option>ElevenLabs</option><option>ChatGPT</option><option>Claude</option></select></div><div><label for="fc">Content type</label><select id="fc"><option value="">All types</option><option>AI Video</option><option>AI Animation</option><option>Image / Graphics</option><option>Social Reel</option></select></div></div><div class="qs" id="fchips"></div><p class="note" id="cnt" aria-live="polite"></p><div id="list"></div>
+</div></section>
+
+<section id="compare"><h2>Compare the top 3</h2>
+<div class="card tbl" id="cmp"></div></section>
+
+<section id="profile"><h2>Creator profile</h2><p class="sub" style="margin-top:6px;margin-bottom:14px">Sample profile. Every number is demo data.</p><div class="card"><div class="pf"><div class="av" id="pav"></div><div><h3>Neshiga AI Studio ✔</h3><p class="note" style="margin:4px 0">AI Filmmaker | Cinematic Visuals | Product Ads · Chennai · 4.8 (124 reviews)</p><div class="chips"><span class="chip ok">Tool verified</span><span class="chip ok">Workflow verified</span><span class="chip ok">Portfolio verified</span><span class="chip ok">Commercial ready</span></div></div><div class="ring"><i>97%</i></div></div>
+<div class="two"><div><b>AI workflow strengths</b><div class="bar"><span>AI Video</span><s><i style="width:94%"></i></s><b>94%</b></div><div class="bar"><span>Cinematic</span><s><i style="width:91%"></i></s><b>91%</b></div><div class="bar"><span>Product Ads</span><s><i style="width:89%"></i></s><b>89%</b></div><div class="bar"><span>Fashion</span><s><i style="width:87%"></i></s><b>87%</b></div></div><div><b>Tools &amp; models</b><div class="chips"><span class="chip">Runway</span><span class="chip">Midjourney</span><span class="chip">Sora</span><span class="chip">Flux</span><span class="chip">ComfyUI</span><span class="chip">ElevenLabs</span></div><p style="margin:14px 0 4px"><b>Creative DNA</b></p><div class="chips"><span class="chip">Luxury ads</span><span class="chip">Cinematic</span><span class="chip">Storytelling</span><span class="chip">Fashion</span></div></div></div></div></section>
+<div class="card" style="margin-top:16px"><b>Featured AI portfolio</b> <span class="note">Sample work. Prompts are illustrative.</span><div class="two pg"><div class="pt"><div class="tile" data-k="lux" data-t="Luxury Perfume Ad"></div><div class="chips"><span class="chip">Runway</span><span class="chip">Midjourney</span><span class="chip">9:16 · 1080×1920</span><span class="chip ok">Commercial use</span></div><details><summary>Prompt and workflow</summary><p class="note">Prompt: slow macro push-in on an amber perfume bottle, rim light, black marble, cinematic. Workflow: Midjourney keyframes, Runway image-to-video, upscale, color grade. Time: 2 days.</p></details></div><div class="pt"><div class="tile" data-k="fash" data-t="Fashion Campaign"></div><div class="chips"><span class="chip">Sora</span><span class="chip">ComfyUI</span><span class="chip">16:9 · 1920×1080</span><span class="chip ok">Commercial use</span></div><details><summary>Prompt and workflow</summary><p class="note">Prompt: runway walk through neon rain, shallow depth of field, editorial look. Workflow: Sora clips, ComfyUI style pass, edit and sound. Time: 3 days.</p></details></div><div class="pt"><div class="tile" data-k="shoe" data-t="Product Launch"></div><div class="chips"><span class="chip">Flux</span><span class="chip">Runway</span><span class="chip">1:1 · 1080×1080</span><span class="chip ok">Commercial use</span></div><details><summary>Prompt and workflow</summary><p class="note">Prompt: floating sneaker on pastel gradient, soft studio light, product shot. Workflow: Flux stills, Runway motion, loop edit. Time: 1 day.</p></details></div></div></div>
+<section id="twin"><h2>Creative Twin</h2><p class="sub" style="margin-top:0">Ask a creator's twin a question. It answers only from their portfolio and says so when it can't.</p>
+<div class="card">
+<div class="row"><div><label for="tw">Creator</label><select id="tw"></select></div></div>
+<label for="q">Question</label>
+<input id="q" value="Can this creator make a luxury perfume advertisement?">
+<div class="qs" id="qs"></div><div style="margin-top:12px"><button id="ask">Ask the twin</button></div>
+<div id="ansOut" aria-live="polite"></div>
+</div></section>
+
+<section id="revise"><h2>Feedback translator</h2><p class="sub" style="margin-top:0">Turn vague notes into a revision list the creator can act on.</p>
+<div class="card">
+<label for="fb">Brand feedback</label>
+<input id="fb" value="Make it more premium, with a little pop">
+<div style="margin-top:12px"><button id="tr">Translate</button></div>
+<div id="fbOut"></div>
+</div></section>
+
+<section id="workspace"><h2>Project workspace</h2><p class="sub" style="margin-top:6px;margin-bottom:14px">Hire a creator and the tracker builds itself from your brief.</p><div class="card two" id="wsCard" style="margin-top:0"></div></section>
+<section id="qc"><h2>AI Quality Inspector</h2><p class="sub" style="margin-top:0">These checks run on the file details you enter. Logo and typo checks need a vision model and are on the roadmap.</p>
+<div class="card dark"><div class="tile" data-k="lux" data-t="final_perfume_ad.mp4" style="min-height:160px;margin-bottom:14px;transform:none;animation:none"></div>
+<div class="row">
+<div><label for="w">Width (px)</label><input id="w" type="number" value="1080"></div>
+<div><label for="h">Height (px)</label><input id="h" type="number" value="1920"></div>
+<div><label for="ar">Required ratio</label><select id="ar"><option>9:16</option><option>1:1</option><option>16:9</option></select></div>
+<div><label for="ff">Format</label><select id="ff"><option>mp4</option><option>mov</option><option>png</option><option>webm</option></select></div>
+</div>
+<div class="row"><div><label for="rt">Commercial rights declared by creator</label><select id="rt"><option value="1">Yes</option><option value="0">No</option></select></div></div>
+<button id="qb">Run checks</button>
+<div id="qOut"></div>
+</div></section>
+<section id="memory"><h2>Brand memory</h2><p class="sub" style="margin-top:6px;margin-bottom:14px">Colors and voice below are a sample. Your last brief is saved for real.</p><div class="card two" style="margin-top:0"><div><p style="margin:0 0 6px"><b>Colors</b></p><span class="dot" style="background:#2a2470"></span><span class="dot" style="background:#f5a623"></span><span class="dot" style="background:#6a4fd0"></span><p style="margin:14px 0 4px"><b>Fonts</b></p><p style="margin:0">Montserrat</p><p style="margin:14px 0 4px"><b>Brand voice</b></p><p style="margin:0">Premium · Elegant · Trustworthy</p></div><div><b>AI assistant</b><div class="ans"><span id="memTxt">No saved brief yet. Build one and it is remembered on this device.</span><div style="margin-top:8px"><button class="ghost" id="reuse" hidden>Reuse last brief</button></div></div><div style="margin-top:12px"><a class="btn" href="#brief">Create New Brief</a></div></div></div></section>
+<section id="model"><h2>Data model</h2><p class="sub" style="margin-top:6px;margin-bottom:14px">How profiles, portfolios and briefs are stored.</p><div class="card"><pre>Creator { id, name, bio, location, specialization[], skills[],
+  tools[{name, verified}], workflow[], content_types[], formats[],
+  commercial_ready, price_inr, delivery_days,
+  trust{tools, workflow, portfolio}, portfolio[PortfolioItem] }
+
+PortfolioItem { id, title, media_url, content_type, tools[], prompt,
+  workflow[], resolution, aspect_ratio, duration_s, time_taken,
+  commercial_rights{allowed, license}, client_feedback }
+
+Brief { id, brand_id, idea, content_type, style, aspect_ratio, platform,
+  duration_s, budget_inr, deadline_days, tone, audience,
+  commercial_use{required, scope, territory, term},
+  references[], skills_needed[], ai_summary }</pre></div></section>
+</main><footer class="ft"><span>Smarter Briefs</span><span>Better Matches</span><span>Verified Creators</span><span>Amazing Content</span></footer>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Create Account | CreatorOS AI</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Caveat:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --ink: #17153b;
+      --mute: #77738e;
+      --ind: #5b3fd8;
+      --navy: #17153b;
+      --orange: #f59e2c;
+      --line: rgba(91, 63, 216, 0.14);
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+
+    body {
+
+      min-height: 100vh;
+
+      font-family: "DM Sans", sans-serif;
+
+      color: var(--ink);
+
+      background:
+        radial-gradient(
+          circle at 5% 10%,
+          rgba(255, 176, 120, 0.65),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 95% 10%,
+          rgba(145, 115, 255, 0.5),
+          transparent 34%
+        ),
+        radial-gradient(
+          circle at 85% 95%,
+          rgba(255, 205, 170, 0.5),
+          transparent 30%
+        ),
+        linear-gradient(
+          135deg,
+          #fff3ea,
+          #efe8ff 55%,
+          #ffeef0
+        );
+
+      overflow-x: hidden;
+    }
+
+
+    /* =====================================
+       BACKGROUND DECORATIONS
+    ====================================== */
+
+    .shape {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+
+    .shape.one {
+      width: 300px;
+      height: 300px;
+
+      left: -100px;
+      top: -120px;
+
+      background: rgba(255, 182, 74, 0.16);
+    }
+
+
+    .shape.two {
+      width: 380px;
+      height: 380px;
+
+      right: -140px;
+      bottom: -150px;
+
+      background: rgba(91, 63, 216, 0.13);
+    }
+
+
+    .shape.three {
+      width: 150px;
+      height: 150px;
+
+      left: 8%;
+      top: 45%;
+
+      background: rgba(255, 132, 151, 0.13);
+    }
+
+
+    /* =====================================
+       PAGE
+    ====================================== */
+
+    .page {
+
+      width: 100%;
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 28px;
+
+      position: relative;
+      z-index: 1;
+    }
+
+
+    /* =====================================
+       MAIN CARD
+
+       ALWAYS:
+
+       LEFT  = VISUAL
+       RIGHT = REGISTER
+    ====================================== */
+
+    .register-wrapper {
+
+      width: 100%;
+      max-width: 1180px;
+
+      min-height: 720px;
+
+      display: grid;
+
+      grid-template-columns: 1.05fr 0.95fr;
+
+      grid-template-areas:
+        "visual register";
+
+      background: rgba(255, 255, 255, 0.32);
+
+      border: 1px solid rgba(255, 255, 255, 0.75);
+
+      border-radius: 30px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 30px 90px rgba(91, 63, 216, 0.14),
+        0 12px 35px rgba(23, 21, 59, 0.08);
+
+      backdrop-filter: blur(20px);
+    }
+
+
+    /* =====================================
+       VISUAL LEFT
+    ====================================== */
+
+    .visual-section {
+
+      grid-area: visual;
+
+      position: relative;
+
+      min-width: 0;
+
+      padding: 48px 56px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at 82% 12%,
+          rgba(255, 185, 110, 0.55),
+          transparent 38%
+        ),
+        radial-gradient(
+          circle at 15% 90%,
+          rgba(121, 93, 235, 0.36),
+          transparent 43%
+        ),
+        linear-gradient(
+          145deg,
+          #fff1e9,
+          #eee8ff
+        );
+    }
+
+
+    /* =====================================
+       BRAND
+    ====================================== */
+
+    .brand {
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      font-family: "Bricolage Grotesque", sans-serif;
+
+      font-size: 25px;
+      font-weight: 800;
+
+      color: var(--navy);
+    }
+
+
+    .brand-star {
+
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 14px;
+
+      background: var(--navy);
+
+      color: white;
+
+      font-size: 24px;
+
+      box-shadow:
+        0 12px 25px rgba(23, 21, 59, 0.18);
+    }
+
+
+    /* =====================================
+       VISUAL CONTENT
+    ====================================== */
+
+    .visual-content {
+
+      position: relative;
+      z-index: 3;
+
+      max-width: 560px;
+    }
+
+
+    .small-label {
+
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+
+      padding: 9px 15px;
+
+      border-radius: 30px;
+
+      background: rgba(255, 255, 255, 0.72);
+
+      border: 1px solid rgba(91, 63, 216, 0.12);
+
+      color: var(--ind);
+
+      font-size: 13px;
+      font-weight: 800;
+
+      margin-bottom: 26px;
+    }
+
+
+    .dot {
+
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background: var(--orange);
+    }
+
+
+    .visual-content h2 {
+
+      font-family: "Bricolage Grotesque", sans-serif;
+
+      font-size: clamp(52px, 5vw, 76px);
+
+      line-height: 0.94;
+
+      letter-spacing: -3px;
+
+      margin-bottom: 28px;
+    }
+
+
+    .visual-content h2 span {
+
+      color: var(--ind);
+    }
+
+
+    .visual-content p {
+
+      max-width: 470px;
+
+      color: #68647e;
+
+      font-size: 17px;
+
+      line-height: 1.7;
+    }
+
+
+    .script {
+
+      display: inline-block;
+
+      margin-top: 25px;
+
+      font-family: "Caveat", cursive;
+
+      font-size: 30px;
+
+      color: #6b54d9;
+
+      transform: rotate(-3deg);
+    }
+
+
+    /* =====================================
+       AI MATCH CARD
+    ====================================== */
+
+    .floating-card {
+
+      position: absolute;
+
+      z-index: 5;
+
+      background: rgba(255, 255, 255, 0.82);
+
+      border: 1px solid rgba(255, 255, 255, 0.9);
+
+      backdrop-filter: blur(16px);
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 20px 45px rgba(91, 63, 216, 0.13);
+
+      padding: 17px 19px;
+    }
+
+
+    .creator-card {
+
+      width: 220px;
+
+      right: 35px;
+      top: 155px;
+
+      transform: rotate(5deg);
+    }
+
+
+    .creator-title {
+
+      color: #88839b;
+
+      font-size: 11px;
+
+      font-weight: 600;
+
+      margin-bottom: 10px;
+    }
+
+
+    .creator-row {
+
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+    }
+
+
+    .avatar {
+
+      width: 42px;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          135deg,
+          #8b6ff0,
+          #f59e2c
+        );
+
+      color: white;
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+
+    .creator-name {
+
+      font-size: 14px;
+
+      font-weight: 800;
+    }
+
+
+    .creator-role {
+
+      color: #88839b;
+
+      font-size: 10px;
+
+      margin-top: 3px;
+    }
+
+
+    /* =====================================
+       CREATIVE TWIN
+    ====================================== */
+
+    .twin-card {
+
+      width: 230px;
+
+      right: 65px;
+      bottom: 115px;
+
+      transform: rotate(-4deg);
+    }
+
+
+    .twin-top {
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 12px;
+    }
+
+
+    .twin-top b {
+
+      font-size: 14px;
+    }
+
+
+    .twin-badge {
+
+      padding: 5px 8px;
+
+      border-radius: 8px;
+
+      background: #eee9ff;
+
+      color: var(--ind);
+
+      font-size: 9px;
+
+      font-weight: 800;
+    }
+
+
+    .twin-lines {
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 8px;
+    }
+
+
+    .twin-line {
+
+      width: 100%;
+      height: 7px;
+
+      background: #eeeaf7;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+    }
+
+
+    .twin-line span {
+
+      display: block;
+
+      height: 100%;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #8b6ff0,
+          #f59e2c
+        );
+    }
+
+
+    .twin-line:nth-child(1) span {
+      width: 91%;
+    }
+
+
+    .twin-line:nth-child(2) span {
+      width: 78%;
+    }
+
+
+    .twin-line:nth-child(3) span {
+      width: 95%;
+    }
+
+
+    /* =====================================
+       REGISTER RIGHT
+    ====================================== */
+
+    .register-section {
+
+      grid-area: register;
+
+      min-width: 0;
+
+      background: rgba(255, 255, 255, 0.76);
+
+      backdrop-filter: blur(20px);
+
+      padding: 55px 52px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .register-box {
+
+      width: 100%;
+
+      max-width: 430px;
+    }
+
+
+    .register-box h1 {
+
+      font-family: "Bricolage Grotesque", sans-serif;
+
+      font-size: 40px;
+
+      line-height: 1.05;
+
+      letter-spacing: -1.5px;
+
+      margin-bottom: 10px;
+    }
+
+
+    .subtitle {
+
+      color: var(--mute);
+
+      font-size: 15px;
+
+      line-height: 1.65;
+
+      margin-bottom: 27px;
+    }
+
+
+    /* =====================================
+       FORM
+    ====================================== */
+
+    .form-group {
+
+      margin-bottom: 16px;
+    }
+
+
+    .form-group label {
+
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+
+    .input-wrapper {
+
+      position: relative;
+    }
+
+
+    .input-icon {
+
+      position: absolute;
+
+      left: 16px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      font-size: 16px;
+
+      color: #77738e;
+
+      z-index: 2;
+    }
+
+
+    .form-group input {
+
+      width: 100%;
+
+      height: 52px;
+
+      border: 1px solid #ded9f4;
+
+      border-radius: 13px;
+
+      outline: none;
+
+      background: rgba(255, 255, 255, 0.9);
+
+      color: var(--ink);
+
+      font-family: "DM Sans", sans-serif;
+
+      font-size: 14px;
+
+      padding: 0 15px 0 45px;
+
+      transition: 0.2s;
+    }
+
+
+    .form-group input::placeholder {
+
+      color: #aaa6b9;
+    }
+
+
+    .form-group input:focus {
+
+      border-color: var(--ind);
+
+      background: white;
+
+      box-shadow:
+        0 0 0 4px rgba(91, 63, 216, 0.08);
+    }
+
+
+    /* =====================================
+       BUTTON
+    ====================================== */
+
+    .auth-btn {
+
+      width: 100%;
+
+      height: 54px;
+
+      margin-top: 7px;
+
+      border: none;
+
+      border-radius: 13px;
+
+      cursor: pointer;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffc46a,
+          #f59e2c
+        );
+
+      color: var(--navy);
+
+      font-family: "DM Sans", sans-serif;
+
+      font-size: 15px;
+
+      font-weight: 800;
+
+      box-shadow:
+        0 12px 28px rgba(245, 158, 44, 0.23);
+
+      transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+    }
+
+
+    .auth-btn:hover {
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 16px 32px rgba(245, 158, 44, 0.30);
+    }
+
+
+    .auth-btn:active {
+
+      transform: translateY(0);
+    }
+
+
+    /* =====================================
+       MESSAGE
+
+       FIXED HEIGHT
+       So layout won't move after click
+    ====================================== */
+
+    .message {
+
+      height: 22px;
+
+      margin-top: 10px;
+
+      margin-bottom: 0;
+
+      text-align: center;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      overflow: hidden;
+    }
+
+
+    .message.success {
+      color: #16805a;
+    }
+
+
+    .message.error {
+      color: #d64545;
+    }
+
+
+    /* =====================================
+       FOOTER
+    ====================================== */
+
+    .auth-footer {
+
+      margin-top: 19px;
+
+      text-align: center;
+
+      color: var(--mute);
+
+      font-size: 14px;
+    }
+
+
+    .auth-footer a {
+
+      color: var(--ind);
+
+      font-weight: 800;
+
+      text-decoration: none;
+    }
+
+
+    .auth-footer a:hover {
+
+      text-decoration: underline;
+    }
+
+
+    .secure-note {
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+
+      margin-top: 18px;
+
+      color: #9691a8;
+
+      font-size: 11px;
+    }
+
+
+    /* =====================================
+       TABLET
+    ====================================== */
+
+    @media (max-width: 950px) {
+
+      .page {
+        padding: 20px;
+      }
+
+
+      .register-wrapper {
+
+        max-width: 900px;
+
+        grid-template-columns: 1fr 1fr;
+      }
+
+
+      .visual-section {
+
+        padding: 40px 35px;
+      }
+
+
+      .visual-content h2 {
+
+        font-size: 52px;
+      }
+
+
+      .creator-card {
+
+        right: 20px;
+
+        width: 185px;
+      }
+
+
+      .twin-card {
+
+        right: 30px;
+
+        width: 195px;
+      }
+
+
+      .register-section {
+
+        padding: 40px 30px;
+      }
+
+    }
+
+
+    /* =====================================
+       MOBILE
+    ====================================== */
+
+    @media (max-width: 800px) {
+
+      .page {
+
+        padding: 15px;
+      }
+
+
+      .register-wrapper {
+
+        min-height: auto;
+
+        grid-template-columns: 1fr;
+
+        grid-template-areas:
+          "visual"
+          "register";
+
+        border-radius: 22px;
+      }
+
+
+      .visual-section {
+
+        min-height: 420px;
+
+        padding: 32px;
+      }
+
+
+      .visual-content h2 {
+
+        font-size: 48px;
+
+        letter-spacing: -2px;
+      }
+
+
+      .creator-card {
+
+        right: 25px;
+
+        top: 115px;
+      }
+
+
+      .twin-card {
+
+        right: 25px;
+
+        bottom: 45px;
+      }
+
+
+      .register-section {
+
+        padding: 40px 30px;
+      }
+
+    }
+
+
+    /* =====================================
+       SMALL MOBILE
+    ====================================== */
+
+    @media (max-width: 500px) {
+
+      .page {
+
+        padding: 10px;
+      }
+
+
+      .register-wrapper {
+
+        border-radius: 18px;
+      }
+
+
+      .visual-section {
+
+        min-height: 350px;
+
+        padding: 25px;
+      }
+
+
+      .brand {
+
+        font-size: 20px;
+      }
+
+
+      .brand-star {
+
+        width: 40px;
+        height: 40px;
+
+        border-radius: 11px;
+      }
+
+
+      .visual-content h2 {
+
+        font-size: 38px;
+
+        letter-spacing: -1px;
+      }
+
+
+      .visual-content p {
+
+        font-size: 14px;
+      }
+
+
+      .floating-card {
+
+        display: none;
+      }
+
+
+      .register-section {
+
+        padding: 35px 22px;
+      }
+
+
+      .register-box h1 {
+
+        font-size: 32px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- Background decorations -->
+
+  <div class="shape one"></div>
+  <div class="shape two"></div>
+  <div class="shape three"></div>
+
+
+  <main class="page">
+
+
+    <div class="register-wrapper">
+
+
+      <!-- =================================================
+           LEFT SIDE
+           VISUAL
+      ================================================== -->
+
+      <section class="visual-section">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+          <div class="brand-star">
+            ✦
+          </div>
+
+          CreatorOS AI
+
+        </div>
+
+
+        <!-- MAIN VISUAL CONTENT -->
+
+        <div class="visual-content">
+
+
+          <div class="small-label">
+
+            <span class="dot"></span>
+
+            WELCOME TO CREATOROS
+
+          </div>
+
+
+          <h2>
+
+            Your ideas.
+            <br>
+
+            <span>Your AI.</span>
+            <br>
+
+            Your creation.
+
+          </h2>
+
+
+          <p>
+
+            Build your creative identity, discover
+            amazing AI talent, create powerful briefs,
+            and collaborate on projects that matter.
+
+          </p>
+
+
+          <div class="script">
+
+            Let's create something amazing ✦
+
+          </div>
+
+
+        </div>
+
+
+        <!-- CREATOR CARD -->
+
+        <div class="floating-card creator-card">
+
+          <div class="creator-title">
+            CREATOR PROFILE
+          </div>
+
+
+          <div class="creator-row">
+
+            <div class="avatar">
+              AI
+            </div>
+
+
+            <div>
+
+              <div class="creator-name">
+                Creative AI
+              </div>
+
+              <div class="creator-role">
+                Visual · GenAI · Design
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- CREATIVE TWIN -->
+
+        <div class="floating-card twin-card">
+
+          <div class="twin-top">
+
+            <b>
+              Creative Twin
+            </b>
+
+            <span class="twin-badge">
+              AI READY
+            </span>
+
+          </div>
+
+
+          <div class="twin-lines">
+
+            <div class="twin-line">
+              <span></span>
+            </div>
+
+            <div class="twin-line">
+              <span></span>
+            </div>
+
+            <div class="twin-line">
+              <span></span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+      <!-- =================================================
+           RIGHT SIDE
+           REGISTER FORM
+      ================================================== -->
+
+      <section class="register-section">
+
+
+        <div class="register-box">
+
+
+          <h1>
+            Create your account
+          </h1>
+
+
+          <p class="subtitle">
+            Join CreatorOS AI and turn your creative
+            ideas into real possibilities.
+          </p>
+
+
+          <form id="registerForm">
+
+
+            <!-- FULL NAME -->
+
+            <div class="form-group">
+
+              <label for="name">
+                Full name
+              </label>
+
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  👤
+                </span>
+
+
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter your name"
+                  autocomplete="name"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+              <label for="email">
+                Email address
+              </label>
+
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  ✉
+                </span>
+
+
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+              <label for="password">
+                Password
+              </label>
+
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  🔒
+                </span>
+
+
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Create a password"
+                  autocomplete="new-password"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="form-group">
+
+              <label for="confirmPassword">
+                Confirm password
+              </label>
+
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  ✓
+                </span>
+
+
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="Confirm your password"
+                  autocomplete="new-password"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- CREATE ACCOUNT BUTTON -->
+
+            <button
+              type="submit"
+              class="auth-btn"
+            >
+
+              Create my account →
+
+            </button>
+
+
+            <!-- MESSAGE -->
+
+            <p
+              id="registerMessage"
+              class="message"
+            ></p>
+
+
+          </form>
+
+
+          <!-- LOGIN LINK -->
+
+          <p class="auth-footer">
+
+            Already have an account?
+
+            <a href="login.html">
+              Login
+            </a>
+
+          </p>
+
+
+          <!-- SECURITY -->
+
+          <div class="secure-note">
+
+            🔐 Secure authentication · CreatorOS AI
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+
+  <!-- REGISTER JS -->
+
+  <script src="register.js"></script>
+
+</body>
+
+</html>
