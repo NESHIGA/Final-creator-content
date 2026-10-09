@@ -1,3 +1,6 @@
+const API_BASE = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  ? "http://localhost:5000"
+  : "";
 const registerForm = document.getElementById("registerForm");
 
 registerForm.addEventListener("submit", async function (event) {
@@ -49,7 +52,7 @@ registerForm.addEventListener("submit", async function (event) {
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/auth/register",
+      API_BASE + "/api/auth/register",
       {
 
         method: "POST",

@@ -3,6 +3,7 @@ try{authToken=localStorage.getItem("token")}catch(error){}
 if(!authToken){
 window.location.replace("login.html");
 }else{
+var API_BASE=(window.location.hostname==="localhost"||window.location.hostname==="127.0.0.1")?"http://localhost:5000":"";
 var C=[
 {n:"Neshiga AI Studio",ct:["AI Video","Image / Graphics"],c:"Chennai",t:["Midjourney","Runway","Flux"],a:{lux:96,food:70,shoe:60,tech:40,anim:30},p:22000,d:3,tr:97,ev:"4 samples reproduced, metadata matched, no duplicates",pr:[["P1","Noir Perfume Film","lux"],["P2","Gold Watch Reel","lux"],["P3","Saffron Tea Ad","food"]]},
 {n:"Karthik Raja",ct:["AI Video","Social Reel"],c:"Chennai",t:["Sora","ComfyUI","Runway"],a:{lux:55,food:92,shoe:88,tech:60,anim:50},p:15000,d:4,tr:94,ev:"3 samples reproduced, metadata matched, no duplicates",pr:[["P4","Filter Coffee Story","food"],["P5","Street Sneaker Drop","shoe"],["P6","Bakery Reel","food"]]},
@@ -102,7 +103,7 @@ function ensureBriefId(cb){
 if(LASTBRIEF&&LASTBRIEF._id){cb(LASTBRIEF._id,null);return}
 var token=null;try{token=localStorage.getItem("token")}catch(x){}
 var headers={};if(token)headers["Authorization"]="Bearer "+token;
-fetch("http://localhost:5000/api/briefs?limit=1",{headers:headers})
+fetch(API_BASE+"/api/briefs?limit=1",{headers:headers})
 .then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok,j:j,status:r.status}})})
 .then(function(res){
 var arr=(res.j&&(res.j.data||res.j.briefs))||[];
@@ -114,7 +115,7 @@ function ensureReasons(bid,cid,cb){
 var c=null;for(var i=0;i<C.length;i++)if(cKey(C[i])===cid)c=C[i];
 if(c&&c.mr&&c.mr.length&&c.ms!=null){LASTREASONS=c.mr.slice();cb(LASTREASONS);return}
 if(!bid||!cid){LASTREASONS=[];cb([]);return}
-fetch("http://localhost:5000/api/matches",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({briefId:bid})})
+fetch(API_BASE+"/api/matches",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({briefId:bid})})
 .then(function(r){return r.json().catch(function(){return{}})})
 .then(function(j){
 var arr=(j&&j.matches)||[],m=null;
@@ -140,7 +141,7 @@ function updateProjectStatus(p,st){
 if(!p||!p._id)return;
 var token=null;try{token=localStorage.getItem("token")}catch(x){}
 var headers={"Content-Type":"application/json"};if(token)headers["Authorization"]="Bearer "+token;
-fetch("http://localhost:5000/api/projects/"+p._id,{method:"PATCH",headers:headers,body:JSON.stringify({status:st})})
+fetch(API_BASE+"/api/projects/"+p._id,{method:"PATCH",headers:headers,body:JSON.stringify({status:st})})
 .then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok,j:j,status:r.status}})})
 .then(function(res){
 var np=res.j&&(res.j.project||res.j.data);
@@ -163,7 +164,7 @@ var token=null;try{token=localStorage.getItem("token")}catch(x){}
 var headers={"Content-Type":"application/json"};if(token)headers["Authorization"]="Bearer "+token;
 var body={briefId:bid,creatorId:c.id};
 if(c.ms!=null&&isFinite(c.ms))body.matchScore=Math.round(c.ms);
-fetch("http://localhost:5000/api/projects",{method:"POST",headers:headers,body:JSON.stringify(body)})
+fetch(API_BASE+"/api/projects",{method:"POST",headers:headers,body:JSON.stringify(body)})
 .then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok,j:j,status:r.status}})})
 .then(function(res){
 var p=res.j&&(res.j.project||res.j.data);
@@ -209,12 +210,12 @@ var token=null;try{token=localStorage.getItem("token")}catch(x){}
 var payload={idea:$("idea").value.trim(),budget_inr:Number($("bud").value)||0,deadline_days:Number($("dl").value)||0,platform:$("plat").value,tone:$("tone").value,content_type:$("ct").value,style:$("sty").value,aspect_ratio:$("ar2").value,commercial_use:$("cu").value};
 var headers={"Content-Type":"application/json"};if(token)headers["Authorization"]="Bearer "+token;
 var ctrl=window.AbortController?new AbortController():null;var timer=setTimeout(function(){if(ctrl)ctrl.abort()},8000);
-fetch("http://localhost:5000/api/briefs",{method:"POST",headers:headers,body:JSON.stringify(payload),signal:ctrl?ctrl.signal:undefined})
+fetch(API_BASE+"/api/briefs",{method:"POST",headers:headers,body:JSON.stringify(payload),signal:ctrl?ctrl.signal:undefined})
 .then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:!!(r.ok&&j&&j.brief),brief:j&&j.brief,message:j&&j.message,errors:(j&&j.errors)||[],status:r.status}})})
 .catch(function(){return{ok:false,offline:true}})
 .then(function(res){clearTimeout(timer);
 if(res.ok&&res.brief){LASTBRIEF=res.brief;renderSavedBrief(res.brief);clearMatches();render();$("tw").value=rank()[0].i;runMatches(res.brief);$("match").scrollIntoView({behavior:"smooth"});save();setStep(1);aiBrief();return}
-var msg=res.offline?"Could not reach the CreatorOS API at http://localhost:5000 — showing your brief locally.":(res.message||("Brief could not be saved (HTTP "+res.status+")"))+((res.errors&&res.errors.length)?" — "+res.errors.map(function(x){return x.message}).join(", "):"");
+var msg=res.offline?"Could not reach the CreatorOS API"+(API_BASE?" at "+API_BASE:"")+" — showing your brief locally.":(res.message||("Brief could not be saved (HTTP "+res.status+")"))+((res.errors&&res.errors.length)?" — "+res.errors.map(function(x){return x.message}).join(", "):"");
 buildBrief(e);
 $("briefOut").insertAdjacentHTML("afterbegin",'<div class="ans no" style="margin:0 0 12px">⚠️ '+he(msg)+'</div>');
 save();setStep(1);aiBrief();
@@ -310,7 +311,7 @@ style:c.style||"",industries:c.industries||[],platforms:c.platforms||[],
 budgetMax:c.budgetMax||0,bio:c.bio||"",avatar:c.avatar||"",
 skills:c.skills||[],commercialExperience:c.commercialExperience||"",
 verificationStatus:c.verificationStatus||"unverified",source:"api",id:c._id}}
-function loadCreators(){return fetch("http://localhost:5000/api/creators?limit=50").then(function(r){if(!r.ok)throw 0;return r.json().catch(function(){throw 0})}).then(function(j){
+function loadCreators(){return fetch(API_BASE+"/api/creators?limit=50").then(function(r){if(!r.ok)throw 0;return r.json().catch(function(){throw 0})}).then(function(j){
 var arr=j&&Array.isArray(j.creators)?j.creators:(j&&Array.isArray(j.data)?j.data:[]);
 if(!arr.length)throw 0;
 C=arr.map(fromApi);
@@ -325,7 +326,7 @@ $("tw").innerHTML=C.map(function(c,i){return'<option value="'+i+'">'+c.n+'</opti
 render();$("tw").value=rank()[0].i;
 toast("AI matched "+C.length+" creators to your brief");return true}
 function runMatches(b){if(!b||!b._id)return Promise.resolve(false);
-return fetch("http://localhost:5000/api/matches",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({briefId:b._id})})
+return fetch(API_BASE+"/api/matches",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({briefId:b._id})})
 .then(function(r){if(!r.ok)throw 0;return r.json().catch(function(){throw 0})})
 .then(function(j){if(!j||!j.success||!Array.isArray(j.matches)||!j.matches.length)throw 0;return applyMatches(j.matches)})
 .catch(function(){return false})}

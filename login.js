@@ -1,3 +1,6 @@
+const API_BASE = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  ? "http://localhost:5000"
+  : "";
 const loginForm = document.getElementById("loginForm");
 
 loginForm.addEventListener("submit", async function (event) {
@@ -52,7 +55,7 @@ loginForm.addEventListener("submit", async function (event) {
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/auth/login",
+      API_BASE + "/api/auth/login",
       {
 
         method: "POST",
