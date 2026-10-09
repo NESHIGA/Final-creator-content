@@ -78,7 +78,11 @@ loginForm.addEventListener("submit", async function (event) {
 
     // Convert response to JSON
     const result =
-      await response.json();
+      await response.json().catch(() => null);
+
+    if (!result) {
+      throw new Error("The server returned an invalid response. Please try again later.");
+    }
 
 
     // Console for debugging

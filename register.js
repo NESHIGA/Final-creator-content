@@ -73,7 +73,11 @@ registerForm.addEventListener("submit", async function (event) {
     );
 
 
-    const result = await response.json();
+    const result = await response.json().catch(() => null);
+
+    if (!result) {
+      throw new Error("The server returned an invalid response. Please try again later.");
+    }
 
 
     if (!response.ok) {
