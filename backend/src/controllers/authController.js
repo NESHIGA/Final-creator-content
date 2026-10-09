@@ -2,7 +2,13 @@ const jwt = require('jsonwebtoken');
 
 const env = require('../config/env');
 const User = require('../models/User');
+const Creator = require('../models/Creator');
 const { HttpError, asyncHandler } = require('../middleware/error');
+
+function listValues(value) {
+  const values = Array.isArray(value) ? value : String(value || '').split(',');
+  return values.map((item) => String(item).trim()).filter(Boolean);
+}
 
 function signToken(user) {
   if (!env.jwtSecret) {
@@ -14,11 +20,21 @@ function signToken(user) {
 }
 
 const register = asyncHandler(async (req, res) => {
-  const { name, email, password, role, company, specialization } = req.body;
+  const { name, email, password, role, company, specialization, creatorProfile } = req.body;
+
+  if (!env.jwtSecret) throw new HttpError(503, 'Authentication is not configured on the server');
 
   if (role && !['brand', 'creator'].includes(role)) {
     throw new HttpError(400, 'Validation failed', [
       { field: 'role', message: "role must be 'brand' or 'creator'" },
+    ]);
+  }
+
+  const priceInput = creatorProfile && creatorProfile.startingPrice;
+  const startingPrice = Number(priceInput);
+  if (role === 'creator' && (!creatorProfile || priceInput === undefined || priceInput === null || String(priceInput).trim() === '' || !Number.isFinite(startingPrice) || startingPrice < 0)) {
+    throw new HttpError(400, 'A valid starting price is required for creator accounts', [
+      { field: 'creatorProfile.startingPrice', message: 'Enter a price of 0 or more' },
     ]);
   }
 
@@ -35,11 +51,32 @@ const register = asyncHandler(async (req, res) => {
     specialization: specialization || '',
   });
 
+  let creator = null;
+  if (role === 'creator') {
+    try {
+      creator = await Creator.create({
+        user: user._id,
+        name: user.name,
+        email: normalizedEmail,
+        bio: creatorProfile.bio || '',
+        location: creatorProfile.location || '',
+        specialization: listValues(creatorProfile.specialization),
+        contentTypes: listValues(creatorProfile.contentTypes),
+        tools: listValues(creatorProfile.tools).map((tool) => ({ name: tool })),
+        startingPrice,
+      });
+    } catch (error) {
+      await user.deleteOne().catch(() => {});
+      throw error;
+    }
+  }
+
   res.status(201).json({
     success: true,
     message: 'Account created successfully',
     token: signToken(user),
     user,
+    ...(creator ? { creator } : {}),
   });
 });
 

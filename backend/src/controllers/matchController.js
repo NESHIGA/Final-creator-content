@@ -3,7 +3,7 @@ const Creator = require('../models/Creator');
 const { HttpError, asyncHandler } = require('../middleware/error');
 const { matchBrief } = require('../services/matchService');
 
-async function computeMatches(briefId) {
+async function computeMatches(briefId, user) {
   let brief;
   try {
     brief = await Brief.findById(briefId);
@@ -12,17 +12,20 @@ async function computeMatches(briefId) {
     throw err;
   }
   if (!brief) throw new HttpError(404, 'Brief not found');
+  if (String(brief.userId) !== String(user.id) && user.role !== 'admin') {
+    throw new HttpError(403, 'You can only match creators against your own briefs');
+  }
   const creators = await Creator.find({}).populate('portfolio');
   return matchBrief(brief, creators);
 }
 
 const create = asyncHandler(async (req, res) => {
-  const matches = await computeMatches(req.body.briefId);
+  const matches = await computeMatches(req.body.briefId, req.user);
   res.status(200).json({ success: true, matches });
 });
 
 const getOne = asyncHandler(async (req, res) => {
-  const matches = await computeMatches(req.params.briefId);
+  const matches = await computeMatches(req.params.briefId, req.user);
   res.status(200).json({ success: true, matches });
 });
 

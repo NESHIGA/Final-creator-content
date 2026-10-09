@@ -687,6 +687,30 @@
     }
 
 
+    .form-group select {
+
+      width: 100%;
+
+      height: 52px;
+
+      border: 1px solid #ded9f4;
+
+      border-radius: 13px;
+
+      outline: none;
+
+      background: rgba(255, 255, 255, 0.9);
+
+      color: var(--ink);
+
+      font-family: "DM Sans", sans-serif;
+
+      font-size: 14px;
+
+      padding: 0 15px 0 45px;
+    }
+
+
     .form-group input::placeholder {
 
       color: #aaa6b9;
@@ -1278,6 +1302,69 @@
                   required
                 >
 
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="role">Account type</label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">✦</span>
+
+                <select id="role">
+                  <option value="brand">Brand</option>
+                  <option value="creator">Creator</option>
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <div id="creatorFields" hidden>
+
+              <div class="form-group">
+                <label for="creatorLocation">Location</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">⌖</span>
+                  <input type="text" id="creatorLocation" placeholder="City, country">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="creatorSpecialization">Specialization</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">✦</span>
+                  <input type="text" id="creatorSpecialization" placeholder="Product videos, animation">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="creatorContentTypes">Content types</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">▤</span>
+                  <input type="text" id="creatorContentTypes" placeholder="AI Video, Social Reel">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="creatorTools">Tools</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">⚙</span>
+                  <input type="text" id="creatorTools" placeholder="Runway, Midjourney">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="creatorStartingPrice">Starting price (INR)</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">₹</span>
+                  <input type="number" id="creatorStartingPrice" min="0" step="1" placeholder="5000">
+                </div>
               </div>
 
             </div>

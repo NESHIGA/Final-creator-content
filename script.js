@@ -4,14 +4,7 @@ if(!authToken){
 window.location.replace("login.html");
 }else{
 var API_BASE=(window.location.hostname==="localhost"||window.location.hostname==="127.0.0.1")?"http://localhost:5000":"";
-var C=[
-{n:"Neshiga AI Studio",ct:["AI Video","Image / Graphics"],c:"Chennai",t:["Midjourney","Runway","Flux"],a:{lux:96,food:70,shoe:60,tech:40,anim:30},p:22000,d:3,tr:97,ev:"4 samples reproduced, metadata matched, no duplicates",pr:[["P1","Noir Perfume Film","lux"],["P2","Gold Watch Reel","lux"],["P3","Saffron Tea Ad","food"]]},
-{n:"Karthik Raja",ct:["AI Video","Social Reel"],c:"Chennai",t:["Sora","ComfyUI","Runway"],a:{lux:55,food:92,shoe:88,tech:60,anim:50},p:15000,d:4,tr:94,ev:"3 samples reproduced, metadata matched, no duplicates",pr:[["P4","Filter Coffee Story","food"],["P5","Street Sneaker Drop","shoe"],["P6","Bakery Reel","food"]]},
-{n:"Meera Nair",ct:["AI Animation","Image / Graphics"],c:"Kochi",t:["Midjourney","ElevenLabs","Claude"],a:{lux:60,food:60,shoe:40,tech:95,anim:90},p:12000,d:5,tr:94,ev:"3 samples reproduced, metadata matched, 1 near-duplicate reviewed",pr:[["P7","Mascot Explainer","anim"],["P8","SaaS Launch Film","tech"],["P9","Kids Brand Animation","anim"]]},
-{n:"Dev Patel",ct:["AI Video","Image / Graphics"],c:"Ahmedabad",t:["Flux","ComfyUI"],a:{lux:80,food:50,shoe:94,tech:70,anim:40},p:28000,d:2,tr:96,ev:"4 samples reproduced, metadata matched, no duplicates",pr:[["P10","Sneaker Cinematic","shoe"],["P11","Streetwear Lookbook","shoe"],["P12","Jewelry Macro","lux"]]},
-{n:"Sana Iqbal",ct:["Social Reel","AI Video"],c:"Hyderabad",t:["Runway","ChatGPT","ElevenLabs"],a:{lux:65,food:88,shoe:50,tech:75,anim:60},p:9000,d:3,tr:91,cm:0,ev:"2 samples reproduced, metadata matched, no duplicates",pr:[["P13","Cafe Menu Reels","food"],["P14","Gadget Unboxing","tech"]]},
-{n:"Rohan Das",ct:["AI Video","AI Animation"],c:"Kolkata",t:["Sora","Midjourney"],a:{lux:70,food:65,shoe:72,tech:85,anim:55},p:18000,d:4,tr:96,ev:"3 samples reproduced, metadata matched, no duplicates",pr:[["P15","Fintech Explainer","tech"],["P16","Smartwatch Teaser","tech"]]}
-];
+var C=[];
 var CAT={lux:"luxury",food:"food and beverage",shoe:"fashion and footwear",tech:"tech",anim:"animation"};
 var NEAR={lux:["shoe"],food:["lux"],shoe:["lux"],tech:["anim"],anim:["tech"]};
 function $(i){return document.getElementById(i)}
@@ -45,9 +38,15 @@ function render(){
 if(CMP&&CMP.length)relink();
 ["s","b","d"].forEach(function(x){$("v"+x).textContent=$("w"+x).value});
 var R=rank(),h="";
+if(!R.length){
+	$("list").innerHTML='<div class="empty">No creator profiles are in Atlas yet. Sign up as a creator to add the first one.</div>';
+	$("cnt").textContent="0 creator profiles in the database";
+	$("cmp").innerHTML='<div class="empty">There are no database creators to compare yet.</div>';
+	return;
+}
 var F=R.filter(function(o){var q=($("srch").value||"").toLowerCase(),c=o.c,x=(c.n+" "+c.c+" "+c.t.join(" ")+" "+c.pr.map(function(p){return p[1]}).join(" ")).toLowerCase();return(!q||x.indexOf(q)>-1)&&(!FC||c.a[FC]>=85)&&(!$("ft").value||c.t.indexOf($("ft").value)>-1)&&(!$("fc").value||c.ct.indexOf($("fc").value)>-1)});
-F.forEach(function(o){var c=o.c;var sel=cSel(cKey(c));
-h+='<div class="cr"><div class="mr" style="--p:'+o.s.m+'"><i>'+o.s.m+'</i></div><div class="th">'+(TH[o.i]?'<img src="'+TH[o.i]+'" alt="">':SV(c.pr[0][2]))+'<span class="play">▶</span></div><div><h3><span class="av2" style="background:hsl('+(o.i*57+250)+',55%,50%)">'+c.n[0]+'</span>'+c.n+(o===R[0]?'<span class="best">Best match</span>':'')+'</h3><p>'+c.c+' · '+c.t.join(", ")+'</p><div class="chips">'+reasons(c,o.s,K).map(function(r){return'<span class="chip '+r[0]+'">'+r[1]+'</span>'}).join("")+'</div></div><div style="text-align:right"><b>₹'+c.p.toLocaleString("en-IN")+'</b><p>'+c.d+' days</p><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="ghost" data-i="'+o.i+'">Ask twin</button><button '+(sel?'':'class="outline" ')+'data-c="'+he(cKey(c))+'">'+(sel?"✓ Selected":"Compare")+'</button><button class="ghost" data-p="'+he(cKey(c))+'">Start Project</button><button data-h="'+o.i+'">Hire</button></div></div></div>'});
+F.forEach(function(o){var c=o.c;var sel=cSel(cKey(c));var creatorName=he(c.n),creatorLocation=he(c.c),creatorTools=he(c.t.join(", "));
+h+='<div class="cr"><div class="mr" style="--p:'+o.s.m+'"><i>'+o.s.m+'</i></div><div class="th">'+(TH[o.i]?'<img src="'+TH[o.i]+'" alt="">':SV(c.pr[0][2]))+'<span class="play">▶</span></div><div><h3><span class="av2" style="background:hsl('+(o.i*57+250)+',55%,50%)">'+he(c.n[0])+'</span>'+creatorName+(o===R[0]?'<span class="best">Best match</span>':'')+'</h3><p>'+creatorLocation+' · '+creatorTools+'</p><div class="chips">'+reasons(c,o.s,K).map(function(r){return'<span class="chip '+r[0]+'">'+he(r[1])+'</span>'}).join("")+'</div></div><div style="text-align:right"><b>₹'+c.p.toLocaleString("en-IN")+'</b><p>'+c.d+' days</p><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="ghost" data-i="'+o.i+'">Ask twin</button><button '+(sel?'':'class="outline" ')+'data-c="'+he(cKey(c))+'">'+(sel?"✓ Selected":"Compare")+'</button><button class="ghost" data-p="'+he(cKey(c))+'">Start Project</button><button data-h="'+o.i+'">Hire</button></div></div></div>'});
 $("list").innerHTML=h||'<div class="empty">No creators match these filters. Try another tool or type, or <button id="clr" class="ghost">Clear filters</button></div>';if(!F.length)$("clr").onclick=function(){$("srch").value="";$("ft").value="";$("fc").value="";FC=null;document.querySelectorAll("#fchips button").forEach(function(y,i){y.className=i?"":"on"});render()};$("cnt").textContent=F.length+" of "+C.length+" creators · sorted by match";
 var t;
 if(CMP.length>=2){t=cmpTable()}
@@ -55,8 +54,8 @@ else{
 var T=R.slice(0,3),best=T[0],cheap=T.slice().sort(function(a,b){return a.c.p-b.c.p})[0],fast=T.slice().sort(function(a,b){return a.c.d-b.c.d})[0];
 var mm=Math.max.apply(0,T.map(function(o){return o.s.m})),mp=Math.min.apply(0,T.map(function(o){return o.c.p})),md=Math.min.apply(0,T.map(function(o){return o.c.d})),mt=Math.max.apply(0,T.map(function(o){return o.c.tr}));
 t='<table><tr><th>Creator</th><th>Match</th><th>Price</th><th>Delivery</th><th>Trust</th><th>Verification evidence</th><th></th></tr>';
-T.forEach(function(o){t+='<tr><td><b>'+o.c.n+'</b></td><td'+W(o.s.m==mm)+'>'+o.s.m+'</td><td'+W(o.c.p==mp)+'>₹'+o.c.p.toLocaleString("en-IN")+'</td><td'+W(o.c.d==md)+'>'+o.c.d+' days</td><td'+W(o.c.tr==mt)+'>'+o.c.tr+'%</td><td>'+o.c.ev+'</td><td><button class="ghost" data-h="'+o.i+'">Hire</button></td></tr>'});
-t+='</table><p class="note"><b>Recommendation:</b> '+best.c.n+' is the best overall match. '+cheap.c.n+' is the lowest price and '+fast.c.n+' is the fastest of these three. Verification evidence is sample data for this demo.'+(CMP.length===1?' Select one more creator to compare them side by side.':'')+'</p>'}
+T.forEach(function(o){t+='<tr><td><b>'+he(o.c.n)+'</b></td><td'+W(o.s.m==mm)+'>'+o.s.m+'</td><td'+W(o.c.p==mp)+'>₹'+o.c.p.toLocaleString("en-IN")+'</td><td'+W(o.c.d==md)+'>'+o.c.d+' days</td><td'+W(o.c.tr==mt)+'>'+o.c.tr+'%</td><td>'+he(o.c.ev)+'</td><td><button class="ghost" data-h="'+o.i+'">Hire</button></td></tr>'});
+t+='</table><p class="note"><b>Recommendation:</b> '+he(best.c.n)+' is the best overall match. '+he(cheap.c.n)+' is the lowest price and '+he(fast.c.n)+' is the fastest of these three. Verification evidence is sample data for this demo.'+(CMP.length===1?' Select one more creator to compare them side by side.':'')+'</p>'}
 $("cmp").innerHTML=t;document.querySelectorAll("#cmp [data-h],#list [data-h]").forEach(function(b){b.onclick=function(){hire(+b.dataset.h)}});
 document.querySelectorAll("#list [data-i]").forEach(function(b){b.onclick=function(){$("tw").value=b.dataset.i;$("twin").scrollIntoView({behavior:"smooth"})}});
 document.querySelectorAll("#list [data-c]").forEach(function(b){b.onclick=function(){toggleCompare(b.dataset.c)}});
@@ -115,7 +114,9 @@ function ensureReasons(bid,cid,cb){
 var c=null;for(var i=0;i<C.length;i++)if(cKey(C[i])===cid)c=C[i];
 if(c&&c.mr&&c.mr.length&&c.ms!=null){LASTREASONS=c.mr.slice();cb(LASTREASONS);return}
 if(!bid||!cid){LASTREASONS=[];cb([]);return}
-fetch(API_BASE+"/api/matches",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({briefId:bid})})
+var token=null;try{token=localStorage.getItem("token")}catch(x){}
+var headers={"Content-Type":"application/json"};if(token)headers["Authorization"]="Bearer "+token;
+fetch(API_BASE+"/api/matches",{method:"POST",headers:headers,body:JSON.stringify({briefId:bid})})
 .then(function(r){return r.json().catch(function(){return{}})})
 .then(function(j){
 var arr=(j&&j.matches)||[],m=null;
@@ -137,6 +138,26 @@ if(rs.length)right+='<div class="chips">'+rs.map(function(r){return'<span class=
 right+='</div>';
 o.innerHTML=left+right;
 document.querySelectorAll("#wsStatus button").forEach(function(b){b.onclick=function(){if(LASTPROJECT)updateProjectStatus(LASTPROJECT,b.dataset.st)}})}
+function authHeaders(json){var headers={};if(json)headers["Content-Type"]="application/json";var token=null;try{token=localStorage.getItem("token")}catch(x){}if(token)headers["Authorization"]="Bearer "+token;return headers}
+function expireSession(){try{localStorage.removeItem("token");localStorage.removeItem("user")}catch(x){}window.location.replace("login.html")}
+function loadSavedBrief(){
+if(!localStorage.getItem("token"))return;
+fetch(API_BASE+"/api/briefs?limit=1",{headers:authHeaders(false)})
+.then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok,status:r.status,j:j}})})
+.then(function(res){
+if(res.status===401){expireSession();return}
+var b=res.j&&res.j.data&&res.j.data[0];if(!res.ok||!b)return;
+LASTBRIEF=b;$("idea").value=b.idea||"";$("bud").value=b.budget==null?"":b.budget;$("dl").value=b.deadline==null?"":b.deadline;
+$("plat").value=b.platform||$("plat").value;$("tone").value=b.tone||$("tone").value;$("ct").value=b.contentType||$("ct").value;
+$("sty").value=b.style||$("sty").value;$("ar2").value=b.aspectRatio||$("ar2").value;$("cu").value=b.commercialUse||$("cu").value;
+renderSavedBrief(b);save()})
+.catch(function(){})}
+function loadSavedProject(){
+if(!localStorage.getItem("token"))return;
+fetch(API_BASE+"/api/projects?limit=1",{headers:authHeaders(false)})
+.then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok,status:r.status,j:j}})})
+.then(function(res){if(res.status===401){expireSession();return}var p=res.j&&res.j.data&&res.j.data[0];if(res.ok&&p){LASTPROJECT=p;renderProject(p,[])}})
+.catch(function(){})}
 function updateProjectStatus(p,st){
 if(!p||!p._id)return;
 var token=null;try{token=localStorage.getItem("token")}catch(x){}
@@ -155,11 +176,11 @@ if(!c)for(i=0;i<CMP.length;i++)if(CMP[i].k===key||cKey(CMP[i].c)===key)c=CMP[i].
 if(!c){toast("Creator not found");return}
 ensureBriefId(function(bid,meta){
 if(!bid){
-if(meta&&meta.offline){demoWorkspace(c);toast("You are offline — showing the demo workspace");return}
+if(meta&&meta.offline){toast("Could not reach the CreatorOS API. Project was not saved.");return}
 toast((meta&&meta.message)||"Create a brief before starting a project");
 if(!(meta&&meta.message))try{$("brief").scrollIntoView({behavior:"smooth"})}catch(x){}
 return}
-if(!c.id){demoWorkspace(c);toast("Project started in demo mode");return}
+if(!c.id){toast("This creator profile is not stored in Atlas, so a project cannot be saved.");return}
 var token=null;try{token=localStorage.getItem("token")}catch(x){}
 var headers={"Content-Type":"application/json"};if(token)headers["Authorization"]="Bearer "+token;
 var body={briefId:bid,creatorId:c.id};
@@ -169,9 +190,8 @@ fetch(API_BASE+"/api/projects",{method:"POST",headers:headers,body:JSON.stringif
 .then(function(res){
 var p=res.j&&(res.j.project||res.j.data);
 if(res.ok&&p){LASTPROJECT=p;H=c;setStep(3);ensureReasons(bid,c.id,function(rs){renderProject(p,rs)});toast("Project started");try{$("workspace").scrollIntoView({behavior:"smooth"})}catch(x){}return}
-demoWorkspace(c);
 toast("Could not start project"+((res.j&&res.j.message)?" — "+res.j.message:" (HTTP "+res.status+")"))})
-.catch(function(){demoWorkspace(c);toast("Could not reach the CreatorOS API — demo workspace shown")})})}
+.catch(function(){toast("Could not reach the CreatorOS API. Project was not saved.")})})}
 function buildBrief(e){
 var s=$("idea").value.trim(),k=briefCat(),miss=[];
 if(!s)miss.push("Describe what you need");
@@ -180,14 +200,15 @@ if(!/audience|for (men|women|kids|young|teen|students)|gen ?z/i.test(s))miss.pus
 var fields=[["Content type",$("ct").value],["Style",$("sty").value],["Aspect ratio",$("ar2").value],["Commercial use",$("cu").value],["Industry",k?CAT[k]+" advertisement":"Not detected"],["Platform",$("plat").value],["Tone",$("tone").value],["Budget","₹"+(+$("bud").value).toLocaleString("en-IN")],["Deadline",$("dl").value+" days"],["Suggested format",/Instagram/.test($("plat").value)?"9:16 vertical, 15-30 sec":$("plat").value=="YouTube"?"16:9, 30-60 sec":"16:9 master + 1:1 cut"],["Suggested skills",k?{lux:"Cinematic lighting, Midjourney, Runway",food:"Macro product shots, motion design",shoe:"Dynamic camera, ComfyUI",tech:"Explainer, UI animation",anim:"Character design, animation"}[k]:"Add a product to get a suggestion"]];
 var q=Math.max(40,100-miss.length*20);
 $("briefOut").innerHTML='<div class="grid">'+fields.map(function(f){return'<div class="kv"><small>'+f[0]+'</small>'+f[1]+'</div>'}).join("")+'</div><div class="chips"><span class="chip '+(q>=80?"ok":"warn")+'">Brief quality '+q+'%</span>'+miss.map(function(m){return'<span class="chip warn">'+m+'</span>'}).join("")+'</div>';
-render();if(e){$("tw").value=rank()[0].i;$("match").scrollIntoView({behavior:"smooth"})}}
+render();if(e&&rank().length){$("tw").value=rank()[0].i;$("match").scrollIntoView({behavior:"smooth"})}}
 function twinRule(){
+if(!C.length){$("ansOut").textContent="No creator profiles are available yet.";return}
 var c=C[+$("tw").value],q=$("q").value,k=cat(q),o=$("ansOut");
-if(!k){o.innerHTML='<div class="ans no"></div>';o.firstChild.textContent="I couldn't tell which kind of work you mean. Try naming a product, like perfume, coffee, sneakers or an app.";return}
+	if(!k){o.innerHTML='<div class="ans no"></div>';o.firstChild.textContent="I couldn't determine the type of work you mean. Please specify a product, such as perfume, coffee, sneakers, or an app."; return}
 var hit=c.pr.filter(function(x){return x[2]==k}),h;
-if(hit.length){h='<div class="ans"><b>Yes, '+c.n+' has done this.</b> Evidence: '+hit.map(function(x){return x[0]+" "+x[1]}).join(", ")+'. Style fit for '+CAT[k]+': '+c.a[k]+'%. Tools: '+c.t.join(", ")+'.</div>'}
+if(hit.length){h='<div class="ans"><b>Yes, '+he(c.n)+' has done this.</b> Evidence: '+hit.map(function(x){return he(x[0]+" "+x[1])}).join(", ")+'. Style fit for '+he(CAT[k])+': '+c.a[k]+'%. Tools: '+he(c.t.join(", "))+'.</div>'}
 else{var nr=[];NEAR[k].forEach(function(n){c.pr.forEach(function(x){if(x[2]==n)nr.push(x)})});
-h='<div class="ans no"><b>No direct '+CAT[k]+' project in '+c.n+"'s portfolio.</b> "+(nr.length?'Closest work: '+nr.map(function(x){return x[0]+" "+x[1]}).join(", ")+'. ':'')+'Style fit is '+c.a[k]+'%, so consider a paid test task first.</div>'}
+h='<div class="ans no"><b>No direct '+he(CAT[k])+' project in '+he(c.n)+"'s portfolio.</b> "+(nr.length?'Closest work: '+nr.map(function(x){return he(x[0]+" "+x[1])}).join(", ")+'. ':'')+'Style fit is '+c.a[k]+'%, so consider a paid test task first.</div>'}
 o.innerHTML=h}
 function fbRule(){
 var s=$("fb").value.toLowerCase(),L=[],M={premium:["Lower saturation and deepen the blacks","Slow camera moves by about 20%","Add more whitespace around the logo"],pop:["Raise contrast by one step","Add one accent color from the brand palette"],energetic:["Shorten cuts to under 1.5 seconds","Increase motion speed"],warm:["Shift color temperature warmer by about 500K","Add soft golden highlights"],logo:["Increase logo size by 10%","Keep the logo in the safe area"],clean:["Remove background clutter","Limit text to one headline"],dark:["Lower exposure by half a stop","Use rim lighting for separation"]};
@@ -214,23 +235,24 @@ fetch(API_BASE+"/api/briefs",{method:"POST",headers:headers,body:JSON.stringify(
 .then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:!!(r.ok&&j&&j.brief),brief:j&&j.brief,message:j&&j.message,errors:(j&&j.errors)||[],status:r.status}})})
 .catch(function(){return{ok:false,offline:true}})
 .then(function(res){clearTimeout(timer);
-if(res.ok&&res.brief){LASTBRIEF=res.brief;renderSavedBrief(res.brief);clearMatches();render();$("tw").value=rank()[0].i;runMatches(res.brief);$("match").scrollIntoView({behavior:"smooth"});save();setStep(1);aiBrief();return}
+if(res.ok&&res.brief){LASTBRIEF=res.brief;renderSavedBrief(res.brief);clearMatches();render();var ranked=rank();if(ranked.length){$("tw").value=ranked[0].i;runMatches(res.brief)}$("match").scrollIntoView({behavior:"smooth"});save();setStep(1);aiBrief();return}
 var msg=res.offline?"Could not reach the CreatorOS API"+(API_BASE?" at "+API_BASE:"")+" — showing your brief locally.":(res.message||("Brief could not be saved (HTTP "+res.status+")"))+((res.errors&&res.errors.length)?" — "+res.errors.map(function(x){return x.message}).join(", "):"");
 buildBrief(e);
 $("briefOut").insertAdjacentHTML("afterbegin",'<div class="ans no" style="margin:0 0 12px">⚠️ '+he(msg)+'</div>');
-save();setStep(1);aiBrief();
+setStep(1);aiBrief();
 })}
-function hire(i){H=C[i];wsRender();setStep(3);toast(H.n+" hired. Project tracker is ready.");$("workspace").scrollIntoView({behavior:"smooth"})}
+function hire(i){if(C[i])startProject(cKey(C[i]))}
 function wsRender(){var c=H,o=$("wsCard");
 if(!c){o.innerHTML='<div class="empty">No creator hired yet. Compare creators above and press Hire.</div>';return}
 var d=+$("dl").value,k=briefCat(),late=c.d-d;
 var ms=[["Brief approved","Day 0"],["Concept and mood board","Day 1"],["First draft","Day "+Math.max(1,c.d-1)],["Final delivery","Day "+c.d]];
 o.innerHTML='<div><h3>'+(k?CAT[k]+" campaign":"Campaign")+'</h3><p class="note">Creator: <b>'+c.n+'</b> · Quote ₹'+c.p.toLocaleString("en-IN")+'</p>'+ms.map(function(m,i){return'<div class="li"><span>'+(i==0?"✅":"⚪")+'</span><span>'+m[0]+' <small style="color:var(--mute)">'+m[1]+'</small></span></div>'}).join("")+'</div><div><b>Schedule check</b><div class="chips"><span class="chip '+(late<=0?"ok":"warn")+'">'+(late<=0?"Fits your "+d+"-day deadline":"Over deadline by "+late+" days")+'</span><span class="chip ok">Trust '+c.tr+'%</span></div><div class="prog"><i style="width:25%"></i></div><p class="note">Progress moves as milestones complete.</p><button id="toQc">Upload final file for quality check</button></div>';
 $("toQc").onclick=function(){$("qc").scrollIntoView({behavior:"smooth"})}}
-function save(){try{localStorage.setItem("cos",JSON.stringify({i:$("idea").value,b:$("bud").value,d:$("dl").value,p:$("plat").value,t:$("tone").value,c:$("ct").value,y:$("sty").value,a:$("ar2").value,u:$("cu").value}));mem()}catch(x){}}
-function mem(){try{var m=JSON.parse(localStorage.getItem("cos")||"null");if(m){$("memTxt").textContent='Last brief: "'+m.i.slice(0,70)+'" · ₹'+m.b+' · '+m.p+' · '+m.t;$("reuse").hidden=false;$("reuse").onclick=function(){$("idea").value=m.i;$("bud").value=m.b;$("dl").value=m.d;$("plat").value=m.p;$("tone").value=m.t;if(m.c){$("ct").value=m.c;$("sty").value=m.y;$("ar2").value=m.a;$("cu").value=m.u}toast("Brief restored");$("brief").scrollIntoView({behavior:"smooth"})}}}catch(x){}}
-function demo(){$("idea").value="I need a premium advertisement for my perfume brand on Instagram.";$("bud").value=25000;$("dl").value=3;$("tone").value="Premium";brief(true);
-setTimeout(function(){hire(rank()[0].i)},3200);
+function briefCacheKey(){try{var user=JSON.parse(localStorage.getItem("user")||"null");return"cos:"+((user&&(user._id||user.id||user.email))||"anonymous")}catch(x){return"cos:anonymous"}}
+function save(){try{localStorage.setItem(briefCacheKey(),JSON.stringify({i:$("idea").value,b:$("bud").value,d:$("dl").value,p:$("plat").value,t:$("tone").value,c:$("ct").value,y:$("sty").value,a:$("ar2").value,u:$("cu").value}));mem()}catch(x){}}
+function mem(){try{var m=JSON.parse(localStorage.getItem(briefCacheKey())||"null");if(m){$("memTxt").textContent='Last brief: "'+m.i.slice(0,70)+'" · ₹'+m.b+' · '+m.p+' · '+m.t;$("reuse").hidden=false;$("reuse").onclick=function(){$("idea").value=m.i;$("bud").value=m.b;$("dl").value=m.d;$("plat").value=m.p;$("tone").value=m.t;if(m.c){$("ct").value=m.c;$("sty").value=m.y;$("ar2").value=m.a;$("cu").value=m.u}toast("Brief restored");$("brief").scrollIntoView({behavior:"smooth"})}}}catch(x){}}
+function demo(){if(!C.length){toast("Create a creator profile in Atlas before starting the demo.");return}$("idea").value="I need a premium advertisement for my perfume brand on Instagram.";$("bud").value=25000;$("dl").value=3;$("tone").value="Premium";buildBrief(false);
+setTimeout(function(){if(rank().length)demoWorkspace(rank()[0].c)},3200);
 setTimeout(function(){$("qc").scrollIntoView({behavior:"smooth"});qc();setStep(4);toast("Delivery checked")},6200)}
 ["Can this creator make a luxury perfume advertisement?","Do you have coffee or food ad experience?","Can you make a sneaker launch film?","Can you do a 3D animation mascot?"].forEach(function(q){var b=document.createElement("button");b.textContent=q;b.onclick=function(){$("q").value=q;twin()};$("qs").appendChild(b)});
 $("demo").onclick=demo;
@@ -241,12 +263,13 @@ $("aib").textContent=S?"✦ Live Claude AI connected":"✦ Offline demo mode (ru
 function tx(p,t,c){var e=document.createElement(p);if(c)e.className=c;e.textContent=t;return e}
 function aiBrief(){if(!S)return;var id=$("idea").value;
 S.json("Turn this ad idea into a structured creative brief for AI creators. Idea: "+id+". Platform: "+$("plat").value+". Budget INR: "+$("bud").value+". Deadline days: "+$("dl").value+". Tone: "+$("tone").value+". Content type: "+$("ct").value+". Style: "+$("sty").value+". Aspect ratio: "+$("ar2").value+". Commercial use: "+$("cu").value+'. Return JSON only: {"category":"lux|food|shoe|tech|anim|other","title":"","summary":"1-2 sentences","audience":"","visual_style":"","duration":"","deliverables":["",""],"questions":["max 3 missing-info questions"]}').then(function(r){
-if(["lux","food","shoe","tech","anim"].indexOf(r.category)>-1){AIK=[id,r.category];render();$("tw").value=rank()[0].i}
+if(["lux","food","shoe","tech","anim"].indexOf(r.category)>-1){AIK=[id,r.category];render();var ranked=rank();if(ranked.length)$("tw").value=ranked[0].i}
 var d=document.createElement("div");d.className="ans";d.appendChild(tx("b","AI brief: "+(r.title||"")));
 [["Summary",r.summary],["Audience",r.audience],["Visual style",r.visual_style],["Duration",r.duration],["Deliverables",(r.deliverables||[]).join(", ")]].forEach(function(x){if(x[1])d.appendChild(tx("div",x[0]+": "+x[1],"li"))});
 if((r.questions||[]).length){var q=document.createElement("div");q.className="chips";r.questions.forEach(function(t){q.appendChild(tx("span",String(t),"chip warn"))});d.appendChild(q)}
 $("briefOut").appendChild(d)}).catch(function(){})}
 function twin(){var c=C[+$("tw").value],q=$("q").value,o=$("ansOut");
+if(!C.length){o.textContent="No creator profiles are available yet.";return}
 if(!S||!q.trim())return twinRule();
 o.innerHTML='<div class="think"><i></i><i></i><i></i>&nbsp;Reading the portfolio...</div>';
 S.json("You are the Creative Twin of an AI creator on a marketplace. Answer ONLY from this data. If no project directly proves the skill, say so plainly and name the closest project. Never invent projects. Data: "+JSON.stringify({name:c.n,tools:c.t,projects:c.pr.map(function(x){return{id:x[0],title:x[1],type:CAT[x[2]]}}),priceINR:c.p,days:c.d})+" Question: "+q+' Return JSON only: {"direct":true or false,"fit":0-100,"answer":"2-3 sentences","cited":["P1"]}').then(function(r){
@@ -313,10 +336,9 @@ skills:c.skills||[],commercialExperience:c.commercialExperience||"",
 verificationStatus:c.verificationStatus||"unverified",source:"api",id:c._id}}
 function loadCreators(){return fetch(API_BASE+"/api/creators?limit=50").then(function(r){if(!r.ok)throw 0;return r.json().catch(function(){throw 0})}).then(function(j){
 var arr=j&&Array.isArray(j.creators)?j.creators:(j&&Array.isArray(j.data)?j.data:[]);
-if(!arr.length)throw 0;
 C=arr.map(fromApi);
-$("tw").innerHTML=C.map(function(c,i){return'<option value="'+i+'">'+c.n+'</option>'}).join("");
-render();return true}).catch(function(){return false})}
+$("tw").innerHTML=C.length?C.map(function(c,i){return'<option value="'+i+'">'+he(c.n)+'</option>'}).join(""):'<option value="">No creator profiles yet</option>';
+render();return true}).catch(function(){C=[];$('tw').innerHTML='<option value="">Creator profiles unavailable</option>';render();$('cnt').textContent="Could not load creator profiles from the API";return false})}
 function clearMatches(){var changed=false;C.forEach(function(c){if(c.ms!=null||c.mr){delete c.ms;delete c.mr;changed=true}});return changed}
 function applyMatches(ms){var next=[];
 (ms||[]).forEach(function(m){if(!m||!m.creator)return;var c=fromApi(m.creator);c.ms=Math.round(m.matchScore);c.mr=Array.isArray(m.reasons)?m.reasons:[];next.push(c)});
@@ -326,10 +348,14 @@ $("tw").innerHTML=C.map(function(c,i){return'<option value="'+i+'">'+c.n+'</opti
 render();$("tw").value=rank()[0].i;
 toast("AI matched "+C.length+" creators to your brief");return true}
 function runMatches(b){if(!b||!b._id)return Promise.resolve(false);
-return fetch(API_BASE+"/api/matches",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({briefId:b._id})})
+var token=null;try{token=localStorage.getItem("token")}catch(x){}
+var headers={"Content-Type":"application/json"};if(token)headers["Authorization"]="Bearer "+token;
+return fetch(API_BASE+"/api/matches",{method:"POST",headers:headers,body:JSON.stringify({briefId:b._id})})
 .then(function(r){if(!r.ok)throw 0;return r.json().catch(function(){throw 0})})
 .then(function(j){if(!j||!j.success||!Array.isArray(j.matches)||!j.matches.length)throw 0;return applyMatches(j.matches)})
 .catch(function(){return false})}
 $("tw").innerHTML=C.map(function(c,i){return'<option value="'+i+'">'+c.n+'</option>'}).join("");
-wsRender();mem();setStep(0);brief();window.scrollTo(0,0);loadCreators();
+$("tw").innerHTML='<option value="">Loading creator profiles...</option>';
+var logoutButton=document.createElement("button");logoutButton.type="button";logoutButton.className="ghost";logoutButton.textContent="Log out";logoutButton.setAttribute("aria-label","Log out");logoutButton.onclick=function(){try{localStorage.removeItem("token");localStorage.removeItem("user")}catch(x){}window.location.replace("login.html")};document.querySelector("header").appendChild(logoutButton);
+wsRender();mem();setStep(0);brief();window.scrollTo(0,0);loadCreators();loadSavedBrief();loadSavedProject();
 }

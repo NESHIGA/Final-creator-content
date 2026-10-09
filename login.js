@@ -11,7 +11,7 @@ loginForm.addEventListener("submit", async function (event) {
     document.getElementById("email").value.trim();
 
   const password =
-    document.getElementById("password").value.trim();
+    document.getElementById("password").value;
 
   const message =
     document.getElementById("loginMessage");

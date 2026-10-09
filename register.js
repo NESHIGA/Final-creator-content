@@ -2,6 +2,18 @@ const API_BASE = ["localhost", "127.0.0.1"].includes(window.location.hostname)
   ? "http://localhost:5000"
   : "";
 const registerForm = document.getElementById("registerForm");
+const roleField = document.getElementById("role");
+const creatorFields = document.getElementById("creatorFields");
+const startingPriceField = document.getElementById("creatorStartingPrice");
+
+function updateCreatorFields() {
+  const isCreator = roleField.value === "creator";
+  creatorFields.hidden = !isCreator;
+  startingPriceField.required = isCreator;
+}
+
+roleField.addEventListener("change", updateCreatorFields);
+updateCreatorFields();
 
 registerForm.addEventListener("submit", async function (event) {
 
@@ -12,6 +24,17 @@ registerForm.addEventListener("submit", async function (event) {
 
   const email =
     document.getElementById("email").value.trim();
+
+    const role =
+      document.getElementById("role").value;
+
+    const creatorProfile = role === "creator" ? {
+      location: document.getElementById("creatorLocation").value.trim(),
+      specialization: document.getElementById("creatorSpecialization").value,
+      contentTypes: document.getElementById("creatorContentTypes").value,
+      tools: document.getElementById("creatorTools").value,
+      startingPrice: document.getElementById("creatorStartingPrice").value
+    } : undefined;
 
   const password =
     document.getElementById("password").value;
@@ -65,7 +88,9 @@ registerForm.addEventListener("submit", async function (event) {
 
           name: name,
           email: email,
-          password: password
+          password: password,
+          role: role,
+          creatorProfile: creatorProfile
 
         })
 
