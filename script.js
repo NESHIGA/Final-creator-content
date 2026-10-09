@@ -1,3 +1,8 @@
+var authToken=null;
+try{authToken=localStorage.getItem("token")}catch(error){}
+if(!authToken){
+window.location.replace("login.html");
+}else{
 var C=[
 {n:"Neshiga AI Studio",ct:["AI Video","Image / Graphics"],c:"Chennai",t:["Midjourney","Runway","Flux"],a:{lux:96,food:70,shoe:60,tech:40,anim:30},p:22000,d:3,tr:97,ev:"4 samples reproduced, metadata matched, no duplicates",pr:[["P1","Noir Perfume Film","lux"],["P2","Gold Watch Reel","lux"],["P3","Saffron Tea Ad","food"]]},
 {n:"Karthik Raja",ct:["AI Video","Social Reel"],c:"Chennai",t:["Sora","ComfyUI","Runway"],a:{lux:55,food:92,shoe:88,tech:60,anim:50},p:15000,d:4,tr:94,ev:"3 samples reproduced, metadata matched, no duplicates",pr:[["P4","Filter Coffee Story","food"],["P5","Street Sneaker Drop","shoe"],["P6","Bakery Reel","food"]]},
@@ -326,3 +331,4 @@ return fetch("http://localhost:5000/api/matches",{method:"POST",headers:{"Conten
 .catch(function(){return false})}
 $("tw").innerHTML=C.map(function(c,i){return'<option value="'+i+'">'+c.n+'</option>'}).join("");
 wsRender();mem();setStep(0);brief();window.scrollTo(0,0);loadCreators();
+}
