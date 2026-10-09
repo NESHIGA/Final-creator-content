@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login | CreatorOS AI</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Caveat:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --bg: #fff3f0;
+      --card: rgba(255, 255, 255, 0.82);
+      --ink: #17153b;
+      --mute: #77738e;
+      --line: rgba(91, 63, 216, 0.14);
+      --ind: #5b3fd8;
+      --navy: #17153b;
+      --orange: #f59e2c;
+      --purple: #8b6ff0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family: "DM Sans", sans-serif;
+      color: var(--ink);
+
+      background:
+        radial-gradient(
+          circle at 10% 15%,
+          rgba(255, 176, 120, 0.65),
+          transparent 32%
+        ),
+
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(145, 115, 255, 0.5),
+          transparent 34%
+        ),
+
+        radial-gradient(
+          circle at 80% 90%,
+          rgba(255, 205, 170, 0.55),
+          transparent 30%
+        ),
+
+        linear-gradient(
+          135deg,
+          #fff3ea,
+          #efe8ff 55%,
+          #ffeef0
+        );
+
+      overflow-x: hidden;
+    }
+
+
+    /* =========================
+       DECORATIVE BACKGROUND
+    ========================== */
+
+    .shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(1px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shape.one {
+      width: 280px;
+      height: 280px;
+
+      background: rgba(255, 182, 74, 0.18);
+
+      top: -100px;
+      left: -80px;
+    }
+
+    .shape.two {
+      width: 360px;
+      height: 360px;
+
+      background: rgba(91, 63, 216, 0.14);
+
+      right: -120px;
+      bottom: -120px;
+    }
+
+    .shape.three {
+      width: 140px;
+      height: 140px;
+
+      background: rgba(255, 132, 151, 0.16);
+
+      top: 45%;
+      left: 8%;
+    }
+
+
+    /* =========================
+       MAIN
+    ========================== */
+
+    .page {
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 40px 20px;
+
+      position: relative;
+      z-index: 1;
+    }
+
+
+    .login-wrapper {
+
+      width: 100%;
+      max-width: 1050px;
+
+      min-height: 650px;
+
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+
+      background: rgba(255, 255, 255, 0.28);
+
+      border: 1px solid rgba(255, 255, 255, 0.7);
+
+      border-radius: 28px;
+
+      box-shadow:
+        0 30px 80px rgba(91, 63, 216, 0.14),
+        0 10px 30px rgba(23, 21, 59, 0.08);
+
+      backdrop-filter: blur(20px);
+
+      overflow: hidden;
+    }
+
+
+    /* =========================
+       LEFT SECTION
+    ========================== */
+
+    .visual-section {
+
+      position: relative;
+
+      padding: 48px;
+
+      background:
+        radial-gradient(
+          circle at 80% 15%,
+          rgba(255, 185, 110, 0.55),
+          transparent 38%
+        ),
+
+        radial-gradient(
+          circle at 20% 90%,
+          rgba(121, 93, 235, 0.35),
+          transparent 42%
+        ),
+
+        linear-gradient(
+          145deg,
+          #fff1e9,
+          #eee8ff
+        );
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      overflow: hidden;
+    }
+
+
+    .brand {
+
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      font-family: "Bricolage Grotesque", sans-serif;
+
+      font-size: 23px;
+      font-weight: 800;
+
+      color: var(--navy);
+    }
+
+
+    .brand-star {
+
+      width: 34px;
+      height: 34px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 10px;
+
+      background: var(--navy);
+
+      color: #fff;
+
+      font-size: 17px;
+
+      box-shadow:
+        0 8px 20px rgba(23, 21, 59, 0.18);
+    }
+
+
+    .visual-content {
+
+      position: relative;
+      z-index: 2;
+
+      max-width: 440px;
+    }
+
+
+    .small-label {
+
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 7px 12px;
+
+      border-radius: 30px;
+
+      background: rgba(255, 255, 255, 0.7);
+
+      border: 1px solid rgba(91, 63, 216, 0.12);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      color: var(--ind);
+
+      margin-bottom: 20px;
+    }
+
+
+    .dot {
+
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--orange);
+    }
+
+
+    .visual-content h2 {
+
+      font-family: "Bricolage Grotesque", sans-serif;
+
+      font-size: clamp(38px, 4vw, 58px);
+
+      line-height: 0.98;
+
+      letter-spacing: -2px;
+
+      margin-bottom: 22px;
+    }
+
+
+    .visual-content h2 span {
+      color: var(--ind);
+    }
+
+
+    .visual-content p {
+
+      color: #68647e;
+
+      font-size: 16px;
+
+      line-height: 1.7;
+
+      max-width: 390px;
+    }
+
+
+    .script {
+
+      font-family: "Caveat", cursive;
+
+      font-size: 28px;
+
+      color: #6b54d9;
+
+      margin-top: 20px;
+
+      transform: rotate(-3deg);
+
+      display: inline-block;
+    }
+
+
+    /* =========================
+       FLOATING AI CARDS
+    ========================== */
+
+    .floating-card {
+
+      position: absolute;
+
+      background: rgba(255, 255, 255, 0.78);
+
+      backdrop-filter: blur(14px);
+
+      border: 1px solid rgba(255, 255, 255, 0.8);
+
+      box-shadow:
+        0 15px 35px rgba(91, 63, 216, 0.12);
+
+      border-radius: 16px;
+
+      padding: 14px 16px;
+
+      z-index: 3;
+    }
+
+
+    .ai-card {
+
+      right: 30px;
+      top: 145px;
+
+      width: 170px;
+
+      transform: rotate(5deg);
+    }
+
+
+    .ai-title {
+
+      font-size: 11px;
+
+      color: var(--mute);
+
+      margin-bottom: 8px;
+    }
+
+
+    .ai-score {
+
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      font-family: "Bricolage Grotesque";
+
+      font-size: 25px;
+
+      font-weight: 800;
+    }
+
+
+    .score-circle {
+
+      width: 30px;
+      height: 30px;
+
+      border-radius: 50%;
+
+      border: 5px solid #8b6ff0;
+
+      border-right-color: #f59e2c;
+
+      transform: rotate(-35deg);
+    }
+
+
+    .match-card {
+
+      right: 75px;
+      bottom: 105px;
+
+      width: 190px;
+
+      transform: rotate(-4deg);
+    }
+
+
+    .match-top {
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 10px;
+    }
+
+
+    .match-top b {
+      font-size: 13px;
+    }
+
+
+    .match-percent {
+
+      color: #5b3fd8;
+
+      font-weight: 800;
+    }
+
+
+    .progress {
+
+      height: 7px;
+
+      background: #eeeaf7;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+    }
+
+
+    .progress span {
+
+      display: block;
+
+      height: 100%;
+
+      width: 92%;
+
+      background: linear-gradient(
+        90deg,
+        #8b6ff0,
+        #f59e2c
+      );
+
+      border-radius: 20px;
+    }
+
+
+    /* =========================
+       RIGHT LOGIN SECTION
+    ========================== */
+
+    .login-section {
+
+      background: rgba(255, 255, 255, 0.72);
+
+      backdrop-filter: blur(20px);
+
+      padding: 55px 50px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .login-box {
+
+      width: 100%;
+      max-width: 390px;
+    }
+
+
+    .login-box h1 {
+
+      font-family: "Bricolage Grotesque", sans-serif;
+
+      font-size: 38px;
+
+      letter-spacing: -1px;
+
+      margin-bottom: 9px;
+    }
+
+
+    .subtitle {
+
+      color: var(--mute);
+
+      line-height: 1.6;
+
+      margin-bottom: 32px;
+    }
+
+
+    /* =========================
+       FORM
+    ========================== */
+
+    .form-group {
+      margin-bottom: 19px;
+    }
+
+
+    .form-group label {
+
+      display: block;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      margin-bottom: 8px;
+    }
+
+
+    .input-wrapper {
+      position: relative;
+    }
+
+
+    .input-icon {
+
+      position: absolute;
+
+      left: 15px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      font-size: 16px;
+
+      opacity: 0.65;
+    }
+
+
+    .form-group input {
+
+      width: 100%;
+
+      height: 52px;
+
+      border-radius: 12px;
+
+      border: 1px solid var(--line);
+
+      background: rgba(255, 255, 255, 0.85);
+
+      padding: 0 15px 0 43px;
+
+      font-family: "DM Sans", sans-serif;
+
+      font-size: 14px;
+
+      color: var(--ink);
+
+      outline: none;
+
+      transition: 0.25s;
+    }
+
+
+    .form-group input:focus {
+
+      border-color: var(--ind);
+
+      box-shadow:
+        0 0 0 4px rgba(91, 63, 216, 0.09);
+
+      background: #fff;
+    }
+
+
+    .form-group input::placeholder {
+      color: #aaa6b9;
+    }
+
+
+    /* =========================
+       LOGIN BUTTON
+    ========================== */
+
+    .auth-btn {
+
+      width: 100%;
+
+      height: 53px;
+
+      border: none;
+
+      border-radius: 12px;
+
+      cursor: pointer;
+
+      margin-top: 8px;
+
+      font-family: "DM Sans", sans-serif;
+
+      font-size: 15px;
+
+      font-weight: 800;
+
+      color: #17153b;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffc46a,
+          #f59e2c
+        );
+
+      box-shadow:
+        0 10px 25px rgba(245, 158, 44, 0.22);
+
+      transition: 0.25s;
+    }
+
+
+    .auth-btn:hover {
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 14px 30px rgba(245, 158, 44, 0.3);
+    }
+
+
+    .auth-btn:active {
+      transform: translateY(0);
+    }
+
+
+    /* =========================
+       MESSAGE
+    ========================== */
+
+    .message {
+
+      min-height: 20px;
+
+      margin-top: 12px;
+
+      text-align: center;
+
+      font-size: 13px;
+
+      font-weight: 600;
+    }
+
+
+    .message.success {
+      color: #16805a;
+    }
+
+
+    .message.error {
+      color: #d64545;
+    }
+
+
+    /* =========================
+       REGISTER LINK
+    ========================== */
+
+    .auth-footer {
+
+      text-align: center;
+
+      color: var(--mute);
+
+      font-size: 14px;
+
+      margin-top: 24px;
+    }
+
+
+    .auth-footer a {
+
+      color: var(--ind);
+
+      font-weight: 800;
+
+      text-decoration: none;
+    }
+
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+
+    /* =========================
+       TRUST
+    ========================== */
+
+    .secure-note {
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+
+      margin-top: 24px;
+
+      font-size: 11px;
+
+      color: #9691a8;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 850px) {
+
+      .login-wrapper {
+
+        grid-template-columns: 1fr;
+
+        max-width: 550px;
+
+        min-height: auto;
+      }
+
+
+      .visual-section {
+
+        min-height: 390px;
+
+        padding: 35px;
+      }
+
+
+      .visual-content h2 {
+
+        font-size: 43px;
+      }
+
+
+      .ai-card {
+        right: 25px;
+        top: 100px;
+      }
+
+
+      .match-card {
+        right: 30px;
+        bottom: 45px;
+      }
+
+
+      .login-section {
+
+        padding: 45px 30px;
+      }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+      .page {
+        padding: 15px;
+      }
+
+
+      .login-wrapper {
+        border-radius: 20px;
+      }
+
+
+      .visual-section {
+        min-height: 340px;
+        padding: 28px;
+      }
+
+
+      .brand {
+        font-size: 20px;
+      }
+
+
+      .visual-content h2 {
+        font-size: 36px;
+        letter-spacing: -1px;
+      }
+
+
+      .visual-content p {
+        font-size: 14px;
+      }
+
+
+      .floating-card {
+        display: none;
+      }
+
+
+      .login-section {
+        padding: 35px 25px;
+      }
+
+
+      .login-box h1 {
+        font-size: 32px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <!-- Background decorations -->
+  <div class="shape one"></div>
+  <div class="shape two"></div>
+  <div class="shape three"></div>
+
+
+  <main class="page">
+
+    <div class="login-wrapper">
+
+
+      <!-- =========================
+           LEFT VISUAL
+      ========================== -->
+
+      <section class="visual-section">
+
+
+        <div class="brand">
+
+          <div class="brand-star">
+            ✦
+          </div>
+
+          CreatorOS AI
+
+        </div>
+
+
+        <div class="visual-content">
+
+          <div class="small-label">
+            <span class="dot"></span>
+            AI-NATIVE CREATIVE MARKETPLACE
+          </div>
+
+
+          <h2>
+            Create.
+            <br>
+            <span>Connect.</span>
+            <br>
+            Create More.
+          </h2>
+
+
+          <p>
+            Discover AI creators, turn ideas into
+            powerful briefs, and build amazing
+            creative projects together.
+          </p>
+
+
+          <div class="script">
+            Your creative world starts here ✦
+          </div>
+
+        </div>
+
+
+        <!-- AI Match Card -->
+
+        <div class="floating-card ai-card">
+
+          <div class="ai-title">
+            AI CREATOR MATCH
+          </div>
+
+          <div class="ai-score">
+
+            <div class="score-circle"></div>
+
+            97%
+
+          </div>
+
+        </div>
+
+
+        <!-- Match Card -->
+
+        <div class="floating-card match-card">
+
+          <div class="match-top">
+
+            <b>Creative DNA</b>
+
+            <span class="match-percent">
+              92%
+            </span>
+
+          </div>
+
+          <div class="progress">
+            <span></span>
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+      <!-- =========================
+           LOGIN
+      ========================== -->
+
+      <section class="login-section">
+
+        <div class="login-box">
+
+
+          <h1>
+            Welcome back 👋
+          </h1>
+
+
+          <p class="subtitle">
+            Login to continue your creative journey
+            with CreatorOS AI.
+          </p>
+
+
+          <form id="loginForm">
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+              <label for="email">
+                Email address
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  ✉
+                </span>
+
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+              <label for="password">
+                Password
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  🔒
+                </span>
+
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+              type="submit"
+              class="auth-btn"
+            >
+              Login to CreatorOS →
+            </button>
+
+
+            <!-- MESSAGE -->
+
+            <p
+              id="loginMessage"
+              class="message"
+            ></p>
+
+
+          </form>
+
+
+          <!-- REGISTER -->
+
+          <p class="auth-footer">
+
+            Don't have an account?
+
+            <a href="register.html">
+              Create account
+            </a>
+
+          </p>
+
+
+          <div class="secure-note">
+
+            🔐 Secure authentication · CreatorOS AI
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+
+  <script src="login.js"></script>
+
+</body>
+</html>
